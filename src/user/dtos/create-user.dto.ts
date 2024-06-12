@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, Validate } from 'class-validator';
+import { IsNotEmpty, IsOptional, Validate } from 'class-validator';
 import { PasswordMatch } from '../validators/password-match.validator';
 
 export class CreateUserDTO {
@@ -7,7 +7,7 @@ export class CreateUserDTO {
   @ApiProperty({ description: '아이디', example: 'username' })
   username: string;
 
-  @IsNotEmpty({ message: '연락처를 입력해 주세요.' })
+  @IsOptional({ message: '연락처를 입력해 주세요.' })
   @ApiProperty({ description: '연락처', example: '010-1234-5678' })
   contact: string;
 
