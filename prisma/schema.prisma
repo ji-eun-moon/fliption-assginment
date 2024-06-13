@@ -12,7 +12,7 @@ model User {
   username     String   @unique
   contact      String?
   password     String
-  refreshToken String?
+  refreshToken String?  @unique
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }

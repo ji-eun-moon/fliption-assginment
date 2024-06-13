@@ -14,7 +14,7 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiParam,
+  ApiQuery,
   ApiTags,
   getSchemaPath,
 } from '@nestjs/swagger';
@@ -132,10 +132,10 @@ export class UserController {
     return plainToInstance(UserDTO, await this.userService.findById(id));
   }
 
-  @Post()
+  @Post('signup')
   @ApiOperation({
     summary: '회원가입',
-    description: '사용자를 생성합니다.',
+    description: '회원가입합니다.',
   })
   @ApiCreatedResponse({ type: UserDTO })
   async create(@Body() body: CreateUserDTO) {
@@ -147,9 +147,11 @@ export class UserController {
     summary: '로그인',
     description: '로그인을 합니다.',
   })
-  @ApiParam({
+  @ApiQuery({
     name: 'auto',
-    description: '자동로그인 여부',
+    required: false,
+    example: false,
+    description: '자동 로그인 여부',
   })
   @ApiCreatedResponse({ type: UserDTO })
   async login(
@@ -186,6 +188,7 @@ export class UserController {
       await this.userService.setRefreshToken(user.id, refreshToken);
 
       res.cookie(USER_REFRESH_TOKEN_KEY, refreshToken, {
+        httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24 * 30,
       });
     }
