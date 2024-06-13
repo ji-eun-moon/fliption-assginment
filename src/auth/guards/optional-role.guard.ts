@@ -24,9 +24,6 @@ export class OptionalRoleGuard implements CanActivate {
 
     const userAccessToken = request.cookies[USER_ACCESS_TOKEN_KEY];
 
-    if (!userAccessToken)
-      throw new UnauthorizedException('로그인이 필요합니다.');
-
     if (userAccessToken) {
       const accessToken = request.cookies[USER_ACCESS_TOKEN_KEY];
       const refreshToken = request.cookies[USER_REFRESH_TOKEN_KEY];

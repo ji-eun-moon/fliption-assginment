@@ -29,7 +29,9 @@ export class RoleGuard implements CanActivate {
 
     if (userAccessToken) {
       const accessToken = request.cookies[USER_ACCESS_TOKEN_KEY];
+
       if (!accessToken) throw new UnauthorizedException('로그인이 필요합니다.');
+
       const { id } = this.jwtService.verify<AccessTokenPayload>(accessToken);
       const user = await this.prismaService.user.findUnique({
         where: { id },
@@ -38,8 +40,10 @@ export class RoleGuard implements CanActivate {
       if (!user) throw new UnauthorizedException('로그인이 필요합니다.');
 
       const refreshToken = request.cookies[USER_REFRESH_TOKEN_KEY];
+
       if (!refreshToken)
         throw new UnauthorizedException('로그인이 필요합니다.');
+
       if (user.refreshToken !== refreshToken) {
         await this.prismaService.user.update({
           where: { id },
