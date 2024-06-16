@@ -13,6 +13,6 @@ import { RoleGuard } from './guards/role.guard';
     }),
   ],
   providers: [AuthGuard, RoleGuard, AuthUtil],
-  exports: [AuthGuard, RoleGuard, AuthUtil, JwtModule],
+  exports: [AuthGuard, RoleGuard, AuthUtil],
 })
 export class AuthModule {}
