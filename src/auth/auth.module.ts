@@ -1,22 +1,15 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthUtil } from './auth.util';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RoleGuard } from './guards/role.guard';
 
+@Global()
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => {
-        const secret = configService.get<string>('JWT_SECRET');
-        return {
-          secret,
-        };
-      },
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      global: true,
     }),
   ],
   providers: [AuthGuard, RoleGuard, AuthUtil],
